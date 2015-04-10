@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.xmlpull.v1.XmlPullParser;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -31,9 +34,10 @@ public class MainActivity extends ActionBarActivity {
         restaurants.add("Sushi");
         restaurants.add("Wings Over");
 
-        Intent intent = new Intent(this, UpdateAdapter.class);
+        Intent intent = getIntent();
         intent.putStringArrayListExtra("restaurantsList", restaurants);
-        startActivity(intent);
+        //intent.putStringArrayListExtra("restaurantsList", restaurants);
+        //startService(intent);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);

@@ -14,6 +14,6 @@ public class UpdateAdapter extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.i(TAG, "The service has started");
+        //Log.i(TAG, "The service has started");
     }
 }

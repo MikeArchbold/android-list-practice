@@ -3,6 +3,7 @@ package com.example.mike.whats4lunch;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,6 +25,7 @@ import java.util.List;
 //List view: {views: restaurantsList.xml}
 public class AddRestaurants extends ActionBarActivity{
 
+    private static final String TAG = "com.example.mike";
     Button btnAddRestaurant;
 
     @Override
@@ -43,8 +45,17 @@ public class AddRestaurants extends ActionBarActivity{
 
         //get intent data passed from Main
         ArrayList<String> myRestaurants = new ArrayList();
-        Intent intent = getIntent();
+        Intent intent = this.getIntent();
         myRestaurants = intent.getStringArrayListExtra("restaurantsList");
+
+        String listString = "";
+        for (String s : myRestaurants){
+            listString += s + "\t";
+        }
+
+        Log.i(TAG, listString);
+        //Intent intent = getIntent();
+        //myRestaurants = intent.getStringArrayListExtra("restaurantsList");
 
         //build the adapter
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.restaurant_list, myRestaurants);

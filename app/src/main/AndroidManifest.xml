@@ -22,7 +22,7 @@
         />
         <service
             android:enabled="true"
-            android:name="com.example.mike.whats4lunch.UpdateAdapter"
+            android:name=".UpdateAdapter"
         />
     </application>
 
