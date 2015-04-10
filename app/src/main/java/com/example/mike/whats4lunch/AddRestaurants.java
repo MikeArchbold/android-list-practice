@@ -1,5 +1,6 @@
 package com.example.mike.whats4lunch;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -11,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,9 +39,14 @@ public class AddRestaurants extends ActionBarActivity{
 
     private void populateListView() {
         //Create the list of item
-        String[] myRestaurants = {"Blue", "Green", "Purple", "Red"};
+        //String[] myRestaurants = {"Blue", "Green", "Purple", "Red"};
 
-        //build the adpater
+        //get intent data passed from Main
+        ArrayList<String> myRestaurants = new ArrayList();
+        Intent intent = getIntent();
+        myRestaurants = intent.getStringArrayListExtra("restaurantsList");
+
+        //build the adapter
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.restaurant_list, myRestaurants);
 
         //configure the list view

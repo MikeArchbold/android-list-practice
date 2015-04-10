@@ -9,12 +9,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class MainActivity extends ActionBarActivity {
 
     int randomInt;
-    String[] restaurants;
+    ArrayList<String> restaurants;
     Random randomNumberGenerator = new Random();
 
     Button btnRandom;
@@ -23,12 +24,16 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         int totalRestaurants = 5;
-        restaurants = new String[totalRestaurants];
-        restaurants[0] = "Thai";
-        restaurants[1] = "Bobby's Burgers";
-        restaurants[2] = "Wild Willy's";
-        restaurants[3] = "Sushi";
-        restaurants[4] = "Wings Over";
+        restaurants = new ArrayList();
+        restaurants.add("Thai");
+        restaurants.add("Bobby's Burgers");
+        restaurants.add("Wild Willy's");
+        restaurants.add("Sushi");
+        restaurants.add("Wings Over");
+
+        Intent intent = new Intent(this, UpdateAdapter.class);
+        intent.putStringArrayListExtra("restaurantsList", restaurants);
+        startActivity(intent);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -49,7 +54,7 @@ public class MainActivity extends ActionBarActivity {
         btnRandom.setOnClickListener(new View.OnClickListener(){
             public void onClick(View arg0){
                 randomInt = randomNumberGenerator.nextInt(4);
-                whatsForLunch.setText(restaurants[randomInt]);
+                whatsForLunch.setText(restaurants.get(randomInt));
             }
         });
     }

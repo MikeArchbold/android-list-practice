@@ -20,6 +20,10 @@
             android:name=".AddRestaurants"
             android:label="Add Restaurants"
         />
+        <service
+            android:enabled="true"
+            android:name="com.example.mike.whats4lunch.UpdateAdapter"
+        />
     </application>
 
 </manifest>
