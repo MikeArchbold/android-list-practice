@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Whats4Lunch</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="addRestaurants">Add Restaurants</string>
+    <string name="random">Random</string>
+    <string name="addNewRestaurant">Add A New Restaurant</string>
+
+</resources>
