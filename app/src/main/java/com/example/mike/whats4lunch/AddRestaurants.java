@@ -24,7 +24,7 @@ import java.util.List;
 //Array of options --> ArrayAdapter --> ListView
 //List view: {views: restaurantsList.xml}
 public class AddRestaurants extends ActionBarActivity{
-
+    //updating the add restaurants class from linux in android studio
     private static final String TAG = "com.example.mike";
     Button btnAddRestaurant;
 
