@@ -5,10 +5,13 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,9 +37,24 @@ public class AddRestaurants extends ActionBarActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_restaurants);
 
+        //will hide the input box when activity is started
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
         btnAddRestaurant = (Button) findViewById(R.id.btnAddRestaurants);
         populateListView();
         registerClickCallback();
+
+        //on click listener for edit text
+        //needs to not be obscured by soft keyboard when clicked
+        final EditText restaurantET = (EditText) findViewById(R.id.restaurantET);
+        restaurantET.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                restaurantET.requestLayout();
+                AddRestaurants.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+                return false;
+            }
+        });
     }
 
     private void populateListView() {
@@ -44,9 +62,10 @@ public class AddRestaurants extends ActionBarActivity{
         //String[] myRestaurants = {"Blue", "Green", "Purple", "Red"};
 
         //get intent data passed from Main
-        ArrayList<String> myRestaurants = new ArrayList();
-        Intent intent = this.getIntent();
-        myRestaurants = intent.getStringArrayListExtra("restaurantsList");
+        //ArrayList<String> myRestaurants = new ArrayList();
+        Intent intent = getIntent();
+        ArrayList<String> myRestaurants = intent.getExtras().getStringArrayList("restaurantsList");
+        //String[] myRestaurants = intent.getExtras().getStringArray("restaurantsList");
 
         String listString = "";
         for (String s : myRestaurants){

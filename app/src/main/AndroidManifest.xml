@@ -19,6 +19,7 @@
         <activity
             android:name=".AddRestaurants"
             android:label="Add Restaurants"
+            android:windowSoftInputMode="stateAlwaysHidden"
         />
         <service
             android:enabled="true"
