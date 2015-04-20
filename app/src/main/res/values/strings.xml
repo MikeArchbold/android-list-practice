@@ -6,4 +6,7 @@
     <string name="random">Random</string>
     <string name="addNewRestaurant">Add A New Restaurant</string>
 
+    <color name="black">#000000</color>
+    <color name= "white">#FFFFFF</color>
+
 </resources>

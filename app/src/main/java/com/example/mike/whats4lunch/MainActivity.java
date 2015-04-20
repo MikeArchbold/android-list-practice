@@ -15,36 +15,34 @@ import java.util.Random;
 public class MainActivity extends ActionBarActivity {
 
     int randomInt;
-    //String[] restaurants;
-    ArrayList<String> restaurants;
-    Random randomNumberGenerator = new Random();
+    ArrayList<String> myRestaurants;
 
+    Random randomNumberGenerator = new Random();
     Button btnRandom;
     TextView whatsForLunch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /*int totalRestaurants = 5;
-        restaurants = new String[totalRestaurants];
-        restaurants[0] = ("Thai");
-        restaurants[1] = ("Bobby's Burgers");
-        restaurants[2] = ("Wild Willy's");
-        restaurants[3] = ("Sushi");
-        restaurants[4] = ("Wings Over");
+        myRestaurants = new ArrayList();
+        myRestaurants.add("Thai");
+        myRestaurants.add("Bobby's Burgers");
+        /*myRestaurants.add("Wild Willy's");
+        myRestaurants.add("Sushi");
+        myRestaurants.add("Wings Over");
+        myRestaurants.add("test");
+        myRestaurants.add("more test");
+        myRestaurants.add("is it over");
         */
-        restaurants = new ArrayList();
-        restaurants.add("Thai");
-        restaurants.add("Bobby's Burgers");
-        restaurants.add("Wild Willy's");
-        restaurants.add("Sushi");
-        restaurants.add("Wings Over");
-        restaurants.add("test");
-        restaurants.add("more test");
-        restaurants.add("is it over");
-
-        //intent.putStringArrayListExtra("restaurantsList", restaurants);
-
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        addRandomButton();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Intent intent = getIntent();
+        myRestaurants = intent.getExtras().getStringArrayList("restaurantsList");
         setContentView(R.layout.activity_main);
         addRandomButton();
     }
@@ -62,8 +60,9 @@ public class MainActivity extends ActionBarActivity {
 
         btnRandom.setOnClickListener(new View.OnClickListener(){
             public void onClick(View arg0){
-                randomInt = randomNumberGenerator.nextInt(4);
-                whatsForLunch.setText(restaurants.get(randomInt));//[randomInt]);
+                int numberRestaurants = myRestaurants.size();
+                randomInt = randomNumberGenerator.nextInt(numberRestaurants);
+                whatsForLunch.setText(myRestaurants.get(randomInt));//[randomInt]);
             }
         });
     }
@@ -73,13 +72,10 @@ public class MainActivity extends ActionBarActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        Intent settingsIntent;
-
         switch(item.getItemId()){
             case R.id.addRestaurantsSetting:
                 Intent intent = new Intent(MainActivity.this, AddRestaurants.class);
-                intent.putStringArrayListExtra("restaurantsList", restaurants);
+                intent.putStringArrayListExtra("restaurantsList", myRestaurants);
                 startActivity(intent);
         }
 

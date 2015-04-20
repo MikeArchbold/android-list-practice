@@ -7,29 +7,47 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
+        android:background="@color/black"
         android:weightSum="100">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:padding="10dp"
             android:weightSum="100"
-            android:layout_weight="85">
+            android:layout_weight="80">
 
             <EditText
                 android:id="@+id/restaurantET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="40"
-                android:hint="Add more..." />
+                android:layout_weight="50"
+                android:hint="Add more..."
+                android:textColor="@color/white"/>
 
-            <Button
-                android:id="@+id/btnAddRestaurants"
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="60"
-                android:text="New Button" />
+                android:layout_weight="50"
+                android:weightSum="100">
+
+                <Button
+                    android:id="@+id/btnAddRestaurants"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Add New"
+                    android:layout_weight="50" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Finish"
+                    android:id="@+id/btnFinish"
+                    android:layout_weight="50" />
+            </LinearLayout>
+
         </LinearLayout>
 
         <ListView
@@ -38,5 +56,6 @@
             android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
             android:layout_weight="15" />
+
     </LinearLayout>
 </RelativeLayout>
