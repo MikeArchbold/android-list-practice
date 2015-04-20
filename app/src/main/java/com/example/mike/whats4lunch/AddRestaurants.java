@@ -104,7 +104,7 @@ public class AddRestaurants extends ActionBarActivity{
             }
         });
     }
-
+    //place holder
     public void populateListView() {
         //Create the list of item
         //String[] myRestaurants = {"Blue", "Green", "Purple", "Red"};
