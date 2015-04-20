@@ -71,7 +71,7 @@ public class AddRestaurants extends ActionBarActivity{
                 }
             }
         });
-
+        //place holder
         Button btnFinish = (Button) findViewById(R.id.btnFinish);
 
         btnFinish.setOnClickListener(new View.OnClickListener() {
