@@ -31,6 +31,8 @@ import java.util.List;
 //List view: {views: restaurantsList.xml}
 public class AddRestaurants extends ActionBarActivity{
     //updating the add restaurants class from linux in android studio
+    int deleteCounter = 3;
+    String clickedItem = "";
     private static final String TAG = "com.example.mike";
     ArrayList<String> myRestaurants;
     ArrayAdapter<String> adapter;
@@ -51,9 +53,22 @@ public class AddRestaurants extends ActionBarActivity{
             @Override
             public void onClick(View v) {
                 EditText restaurantET = (EditText) findViewById(R.id.restaurantET);
-                adapter.add(restaurantET.getText().toString());
-                restaurantList.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
+                String restaurantInput = restaurantET.getText().toString();
+
+                boolean alreadyExists = false;
+                for (int i = 0; i < adapter.getCount(); i++) {
+                    if (restaurantInput.toLowerCase().equals(adapter.getItem(i).toLowerCase()))
+                        alreadyExists = true;
+                }
+
+                if (alreadyExists) {
+                    String message = new String(restaurantInput + " is already in the list");
+                    Toast.makeText(AddRestaurants.this, message, Toast.LENGTH_LONG).show();
+                } else {
+                    adapter.add(restaurantET.getText().toString());
+                    restaurantList.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                }
             }
         });
 
@@ -65,10 +80,11 @@ public class AddRestaurants extends ActionBarActivity{
                 //take the current array from list
                 String[] array = getStringArray(restaurantList.getAdapter());
                 ArrayList<String> arrayList = new ArrayList<String>(Arrays.asList(array));
+                Log.d("test", "1: " +  arrayList.toString());
 
                 //must pass intent and then start activity
                 Intent intent = new Intent(AddRestaurants.this, MainActivity.class);
-                intent.putStringArrayListExtra("restaurantList", myRestaurants);
+                intent.putStringArrayListExtra("test", myRestaurants);
                 startActivity(intent);
             }
         });
@@ -120,9 +136,28 @@ public class AddRestaurants extends ActionBarActivity{
 
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
+                /*Delete counter keeps track of how many times item has been clicked in a row
+                  Click an item three times in a row to delete*/
                 TextView textView = (TextView) viewClicked;
-                String message = "You clicked # " + position + ", which is string: " + textView.getText().toString();
-                Toast.makeText(AddRestaurants.this, message, Toast.LENGTH_LONG).show();
+                if(clickedItem.equals(textView.getText().toString()))
+                    deleteCounter--;
+                else {
+                    deleteCounter = 2;
+                    clickedItem = textView.getText().toString();
+                }
+
+                if(deleteCounter>0){
+                    String message = "Click " + clickedItem + " " +
+                            Integer.toString(deleteCounter) + " more times to delete";
+                    Toast.makeText(AddRestaurants.this, message, Toast.LENGTH_LONG).show();
+                }
+                else{
+                    adapter.remove(clickedItem);
+                    restaurantList.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                    String message = clickedItem + " deleted";
+                    Toast.makeText(AddRestaurants.this, message, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
