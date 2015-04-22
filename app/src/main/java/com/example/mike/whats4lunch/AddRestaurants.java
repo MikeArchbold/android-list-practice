@@ -117,36 +117,18 @@ public class AddRestaurants extends ActionBarActivity{
         Log.d("test", "The set " + set);
         //get shared pref and set it equal to null(clear it)
         //then commit changes that have been passed
-
-        //save a string
         SharedPreferences prefs = getSharedPreferences("Saved Restaurants", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putStringSet("myKey", set);
         editor.commit();
-
-        //save string set
-        /*SharedPreferences prefs = getSharedPreferences("Saved Restaurants", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putStringSet("RestaurantSet", new HashSet<String>(Arrays.asList("test1", "test2")));
-        editor.commit();
-        Log.d("test", "The set string set " + prefs.getStringSet("RestaurantSet",
-                new HashSet<String>(Arrays.asList("fix it", "fix it", "fix it"))));
-        //editor.putStringSet("SavedRestaurants", set);
-       // editor.commit();
-       */
     }
 
-    public Set getSavedPreferences(){
+    public List getSavedPreferences(){
         SharedPreferences prefs = getSharedPreferences("Saved Restaurants", MODE_PRIVATE);
-        Set<String> extractedString = prefs.getStringSet("myKey", new HashSet<String>(Arrays.asList("it's empty")));
-        Log.d("test", "Well the string set  is" + extractedString.toString());
-        return extractedString;
-        /*SharedPreferences prefs = getSharedPreferences("SavedRestaurants", MODE_PRIVATE);
-        Set<String> set = prefs.getStringSet("RestaurantSet", new HashSet<String>(Arrays.asList("wrong")));
-        ArrayList<String> list = new ArrayList<String>(set);
-        Log.d("test", "this is the list in saved preferences " + list.toString());
-        return list;
-        */
+        Set<String> extractedSet = prefs.getStringSet("myKey", new HashSet<String>(Arrays.asList("it's empty")));
+        Log.d("test", "Well the string set  is" + extractedSet.toString());
+        List<String> extractedList = new ArrayList<String>(extractedSet);
+        return extractedList;
     }
 
     //place holder
@@ -155,8 +137,8 @@ public class AddRestaurants extends ActionBarActivity{
         myRestaurants = intent.getExtras().getStringArrayList("restaurantsList");
 
         setSavedPreferences(myRestaurants);
-        Set set = getSavedPreferences();
-        Log.d("test", set.toString());
+        List list = getSavedPreferences();
+        Log.d("test", list.toString());
 
         String listString = "";
         for (String s : myRestaurants){
