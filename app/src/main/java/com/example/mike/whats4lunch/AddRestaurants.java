@@ -2,6 +2,8 @@ package com.example.mike.whats4lunch;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.AvoidXfermode;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -18,9 +20,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by mike on 3/8/15.
@@ -104,15 +109,54 @@ public class AddRestaurants extends ActionBarActivity{
             }
         });
     }
+
+    public void setSavedPreferences(ArrayList<String> arrayList){
+        Set<String> set = new HashSet<String>();
+        set.addAll(arrayList);
+        Log.d("test", "The arrayList " + arrayList);
+        Log.d("test", "The set " + set);
+        //get shared pref and set it equal to null(clear it)
+        //then commit changes that have been passed
+
+        //save a string
+        SharedPreferences prefs = getSharedPreferences("Saved Restaurants", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putStringSet("myKey", set);
+        editor.commit();
+
+        //save string set
+        /*SharedPreferences prefs = getSharedPreferences("Saved Restaurants", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putStringSet("RestaurantSet", new HashSet<String>(Arrays.asList("test1", "test2")));
+        editor.commit();
+        Log.d("test", "The set string set " + prefs.getStringSet("RestaurantSet",
+                new HashSet<String>(Arrays.asList("fix it", "fix it", "fix it"))));
+        //editor.putStringSet("SavedRestaurants", set);
+       // editor.commit();
+       */
+    }
+
+    public Set getSavedPreferences(){
+        SharedPreferences prefs = getSharedPreferences("Saved Restaurants", MODE_PRIVATE);
+        Set<String> extractedString = prefs.getStringSet("myKey", new HashSet<String>(Arrays.asList("it's empty")));
+        Log.d("test", "Well the string set  is" + extractedString.toString());
+        return extractedString;
+        /*SharedPreferences prefs = getSharedPreferences("SavedRestaurants", MODE_PRIVATE);
+        Set<String> set = prefs.getStringSet("RestaurantSet", new HashSet<String>(Arrays.asList("wrong")));
+        ArrayList<String> list = new ArrayList<String>(set);
+        Log.d("test", "this is the list in saved preferences " + list.toString());
+        return list;
+        */
+    }
+
     //place holder
     public void populateListView() {
-        //Create the list of item
-        //String[] myRestaurants = {"Blue", "Green", "Purple", "Red"};
-
-        //get intent data passed from Main
-        //ArrayList<String> myRestaurants = new ArrayList();
         Intent intent = getIntent();
         myRestaurants = intent.getExtras().getStringArrayList("restaurantsList");
+
+        setSavedPreferences(myRestaurants);
+        Set set = getSavedPreferences();
+        Log.d("test", set.toString());
 
         String listString = "";
         for (String s : myRestaurants){

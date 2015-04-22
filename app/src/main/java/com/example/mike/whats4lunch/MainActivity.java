@@ -72,10 +72,10 @@ public class MainActivity extends ActionBarActivity {
         });
     }
 
-    private String getSavedRestaurants(){
+    private Set getSavedRestaurants(){
         SharedPreferences prefs = getSharedPreferences("Save Restaurants", MODE_PRIVATE);
         Set<String> restaurantSet = new HashSet<String>(prefs.getStringSet("Save Restaurants", new HashSet<String>()));
-
+        return restaurantSet;
     }
 
     @Override
