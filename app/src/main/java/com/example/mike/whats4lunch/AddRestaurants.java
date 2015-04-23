@@ -35,23 +35,18 @@ import java.util.Set;
 //Array of options --> ArrayAdapter --> ListView
 //List view: {views: restaurantsList.xml}
 public class AddRestaurants extends ActionBarActivity{
-    //updating the add restaurants class from linux in android studio
+
     int deleteCounter = 3;
     String clickedItem = "";
-    private static final String TAG = "com.example.mike";
-    ArrayList<String> myRestaurants;
     ArrayAdapter<String> adapter;
     Button btnAddRestaurant;
-    ListView restaurantList;
+    ListView restaurantListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_restaurants);
-
-        //will hide the input box when activity is started
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         btnAddRestaurant = (Button) findViewById(R.id.btnAddRestaurants);
         btnAddRestaurant.setOnClickListener( new View.OnClickListener() {
@@ -60,6 +55,7 @@ public class AddRestaurants extends ActionBarActivity{
                 EditText restaurantET = (EditText) findViewById(R.id.restaurantET);
                 String restaurantInput = restaurantET.getText().toString();
 
+                //checks to see if item already exists
                 boolean alreadyExists = false;
                 for (int i = 0; i < adapter.getCount(); i++) {
                     if (restaurantInput.toLowerCase().equals(adapter.getItem(i).toLowerCase()))
@@ -71,25 +67,26 @@ public class AddRestaurants extends ActionBarActivity{
                     Toast.makeText(AddRestaurants.this, message, Toast.LENGTH_LONG).show();
                 } else {
                     adapter.add(restaurantET.getText().toString());
-                    restaurantList.setAdapter(adapter);
+                    restaurantListView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
                 }
             }
         });
-        //place holder
-        Button btnFinish = (Button) findViewById(R.id.btnFinish);
 
+        Button btnFinish = (Button) findViewById(R.id.btnFinish);
         btnFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //take the current array from list
-                String[] array = getStringArray(restaurantList.getAdapter());
-                ArrayList<String> arrayList = new ArrayList<String>(Arrays.asList(array));
+                String[] array = getStringArray(restaurantListView.getAdapter());
+                Set<String> set = new HashSet<>(Arrays.asList(array));
+                ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(array));
+                setSavedPreferences(arrayList);
+
                 Log.d("test", "1: " +  arrayList.toString());
 
                 //must pass intent and then start activity
                 Intent intent = new Intent(AddRestaurants.this, MainActivity.class);
-                intent.putStringArrayListExtra("test", myRestaurants);
                 startActivity(intent);
             }
         });
@@ -123,48 +120,39 @@ public class AddRestaurants extends ActionBarActivity{
         editor.commit();
     }
 
-    public List getSavedPreferences(){
+    public ArrayList<String> getSavedPreferences(){
         SharedPreferences prefs = getSharedPreferences("Saved Restaurants", MODE_PRIVATE);
-        Set<String> extractedSet = prefs.getStringSet("myKey", new HashSet<String>(Arrays.asList("it's empty")));
+        Set<String> extractedSet = prefs.getStringSet("myKey", new HashSet<>(Arrays.asList("it's empty")));
         Log.d("test", "Well the string set  is" + extractedSet.toString());
-        List<String> extractedList = new ArrayList<String>(extractedSet);
+        ArrayList<String> extractedList = new ArrayList<String>(extractedSet);
         return extractedList;
     }
 
     //place holder
     public void populateListView() {
-        Intent intent = getIntent();
-        myRestaurants = intent.getExtras().getStringArrayList("restaurantsList");
-
-        setSavedPreferences(myRestaurants);
-        List list = getSavedPreferences();
-        Log.d("test", list.toString());
-
-        String listString = "";
-        for (String s : myRestaurants){
-            listString += s + "\t";
-        }
-
-        Log.i(TAG, listString);
+        ArrayList<String> restaurantList = getSavedPreferences();
 
         //build the adapter
-        adapter = new ArrayAdapter<String>(this, R.layout.restaurant_list, myRestaurants);
+        adapter = new ArrayAdapter<>(this, R.layout.restaurant_list, restaurantList);
 
         //configure the list view
-        restaurantList = (ListView) findViewById(R.id.restaurantsListView);
-        restaurantList.setAdapter(adapter);
+        restaurantListView = (ListView) findViewById(R.id.restaurantsListView);
+        restaurantListView.setAdapter(adapter);
     }
 
+    //keeps track of counter to delete items in the list
     public void registerClickCallback(){
-        restaurantList = (ListView) findViewById(R.id.restaurantsListView);
+        restaurantListView = (ListView) findViewById(R.id.restaurantsListView);
 
-        restaurantList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        restaurantListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
                 /*Delete counter keeps track of how many times item has been clicked in a row
                   Click an item three times in a row to delete*/
                 TextView textView = (TextView) viewClicked;
+
+                //subtract or reset counter
                 if(clickedItem.equals(textView.getText().toString()))
                     deleteCounter--;
                 else {
@@ -172,6 +160,7 @@ public class AddRestaurants extends ActionBarActivity{
                     clickedItem = textView.getText().toString();
                 }
 
+                //warn user of deletion and if 0 delete
                 if(deleteCounter>0){
                     String message = "Click " + clickedItem + " " +
                             Integer.toString(deleteCounter) + " more times to delete";
@@ -179,7 +168,7 @@ public class AddRestaurants extends ActionBarActivity{
                 }
                 else{
                     adapter.remove(clickedItem);
-                    restaurantList.setAdapter(adapter);
+                    restaurantListView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
                     String message = clickedItem + " deleted";
                     Toast.makeText(AddRestaurants.this, message, Toast.LENGTH_SHORT).show();

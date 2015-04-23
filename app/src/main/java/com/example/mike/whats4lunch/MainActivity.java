@@ -31,17 +31,14 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         myRestaurantList = getSavedPreferences();
+
         //check if this is the first time starting app
-        if(myRestaurantList == null) {
-            myRestaurantList = new ArrayList<String>();
+        if(myRestaurantList.get(0) == "[it's empty]") {
+            myRestaurantList = new ArrayList<>();
             myRestaurantList.add("Thai");
             myRestaurantList.add("Bobby's Burgers");
             Log.d("test", "First time app is running loading defaults");
             setSavedPreferences(myRestaurantList);
-            /*getIntent().getExtras() != null){
-            Intent intent = getIntent();
-            myRestaurants = intent.getExtras().getStringArrayList("test");
-            Log.d("restart", "3: " + myRestaurants.toString());*/
        }
 
         super.onCreate(savedInstanceState);
@@ -70,12 +67,6 @@ public class MainActivity extends ActionBarActivity {
         });
     }
 
-    private Set getSavedRestaurants(){
-        SharedPreferences prefs = getSharedPreferences("Save Restaurants", MODE_PRIVATE);
-        Set<String> restaurantSet = new HashSet<String>(prefs.getStringSet("Save Restaurants", new HashSet<String>()));
-        return restaurantSet;
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -93,7 +84,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void setSavedPreferences(ArrayList<String> arrayList){
-        Set<String> set = new HashSet<String>();
+        Set<String> set = new HashSet<>();
         set.addAll(arrayList);
         Log.d("test", "The arrayList " + arrayList);
         Log.d("test", "The set " + set);
