@@ -22,7 +22,8 @@ public class MainActivity extends ActionBarActivity {
 
     int randomInt;
     ArrayList<String> myRestaurantList;
-
+    final String emptyListFiller = "Add new restaurants from options";
+    final String defaultText = "Whats 4 Luuunch";
     Random randomNumberGenerator = new Random();
     Button btnRandom;
     TextView whatsForLunch;
@@ -35,8 +36,7 @@ public class MainActivity extends ActionBarActivity {
         //check if this is the first time starting app
         if(myRestaurantList.get(0) == "[it's empty]") {
             myRestaurantList = new ArrayList<>();
-            myRestaurantList.add("Thai");
-            myRestaurantList.add("Bobby's Burgers");
+            myRestaurantList.add(emptyListFiller);
             Log.d("test", "First time app is running loading defaults");
             setSavedPreferences(myRestaurantList);
        }
@@ -74,10 +74,21 @@ public class MainActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         switch(item.getItemId()){
             case R.id.addRestaurantsSetting:
+                Log.d("test", "add restaurant settings");
                 Intent intent = new Intent(MainActivity.this, AddRestaurants.class);
                 //removing intent extra and replacing with saved preference
                 intent.putStringArrayListExtra("restaurantsList", myRestaurantList);
                 startActivity(intent);
+                break;
+            //clear all data and reset text view value
+            case R.id.clearAllData:
+                Log.d("test", "clear all data");
+                myRestaurantList.clear();
+                myRestaurantList.add(emptyListFiller);
+                whatsForLunch = (TextView) findViewById(R.id.whatsForLunch);
+                whatsForLunch.setText(defaultText);
+                setSavedPreferences(myRestaurantList);
+                break;
         }
 
         return super.onOptionsItemSelected(item);

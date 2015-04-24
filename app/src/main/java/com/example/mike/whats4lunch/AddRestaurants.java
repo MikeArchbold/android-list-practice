@@ -38,6 +38,7 @@ public class AddRestaurants extends ActionBarActivity{
 
     int deleteCounter = 3;
     String clickedItem = "";
+    final String emptyListFiller = "Add new restaurants from options";
     ArrayAdapter<String> adapter;
     Button btnAddRestaurant;
     ListView restaurantListView;
@@ -66,6 +67,8 @@ public class AddRestaurants extends ActionBarActivity{
                     String message = new String(restaurantInput + " is already in the list");
                     Toast.makeText(AddRestaurants.this, message, Toast.LENGTH_LONG).show();
                 } else {
+                    if(adapter.getItem(0).equals(emptyListFiller))
+                        adapter.remove(emptyListFiller);
                     adapter.add(restaurantET.getText().toString());
                     restaurantListView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
@@ -81,6 +84,7 @@ public class AddRestaurants extends ActionBarActivity{
                 String[] array = getStringArray(restaurantListView.getAdapter());
                 Set<String> set = new HashSet<>(Arrays.asList(array));
                 ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(array));
+
                 setSavedPreferences(arrayList);
 
                 Log.d("test", "1: " +  arrayList.toString());
@@ -152,26 +156,29 @@ public class AddRestaurants extends ActionBarActivity{
                   Click an item three times in a row to delete*/
                 TextView textView = (TextView) viewClicked;
 
-                //subtract or reset counter
-                if(clickedItem.equals(textView.getText().toString()))
-                    deleteCounter--;
-                else {
-                    deleteCounter = 2;
-                    clickedItem = textView.getText().toString();
-                }
+                //make sure clicked item isn't default
+                if (!adapter.getItem(0).equals(emptyListFiller)){
+                    Log.d("test", clickedItem);
+                    //subtract or reset counter
+                    if (clickedItem.equals(textView.getText().toString()))
+                        deleteCounter--;
+                    else {
+                        deleteCounter = 2;
+                        clickedItem = textView.getText().toString();
+                    }
 
-                //warn user of deletion and if 0 delete
-                if(deleteCounter>0){
-                    String message = "Click " + clickedItem + " " +
-                            Integer.toString(deleteCounter) + " more times to delete";
-                    Toast.makeText(AddRestaurants.this, message, Toast.LENGTH_LONG).show();
-                }
-                else{
-                    adapter.remove(clickedItem);
-                    restaurantListView.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
-                    String message = clickedItem + " deleted";
-                    Toast.makeText(AddRestaurants.this, message, Toast.LENGTH_SHORT).show();
+                    //warn user of deletion and if 0 delete
+                    if (deleteCounter > 0) {
+                        String message = "Click " + clickedItem + " " +
+                                Integer.toString(deleteCounter) + " more times to delete";
+                        Toast.makeText(AddRestaurants.this, message, Toast.LENGTH_LONG).show();
+                    } else {
+                        adapter.remove(clickedItem);
+                        restaurantListView.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                        String message = clickedItem + " deleted";
+                        Toast.makeText(AddRestaurants.this, message, Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
