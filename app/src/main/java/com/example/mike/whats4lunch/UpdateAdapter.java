@@ -2,7 +2,6 @@ package com.example.mike.whats4lunch;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.util.Log;
 
 public class UpdateAdapter extends IntentService {
 

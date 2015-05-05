@@ -1,13 +1,10 @@
 package com.example.mike.whats4lunch;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.AvoidXfermode;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -20,11 +17,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -50,7 +45,7 @@ public class AddRestaurants extends ActionBarActivity{
         setContentView(R.layout.add_restaurants);
 
         btnAddRestaurant = (Button) findViewById(R.id.btnAddRestaurants);
-        btnAddRestaurant.setOnClickListener( new View.OnClickListener() {
+        btnAddRestaurant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EditText restaurantET = (EditText) findViewById(R.id.restaurantET);
@@ -67,7 +62,7 @@ public class AddRestaurants extends ActionBarActivity{
                     String message = new String(restaurantInput + " is already in the list");
                     Toast.makeText(AddRestaurants.this, message, Toast.LENGTH_LONG).show();
                 } else {
-                    if(adapter.getItem(0).equals(emptyListFiller))
+                    if (adapter.getItem(0).equals(emptyListFiller))
                         adapter.remove(emptyListFiller);
                     adapter.add(restaurantET.getText().toString());
                     restaurantListView.setAdapter(adapter);

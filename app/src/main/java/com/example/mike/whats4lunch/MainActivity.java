@@ -23,7 +23,7 @@ public class MainActivity extends ActionBarActivity {
     int randomInt;
     ArrayList<String> myRestaurantList;
     final String emptyListFiller = "Add new restaurants from options";
-    final String defaultText = "Whats 4 Luuunch";
+    final String defaultText = "Whats 4 Luuunch?!";
     Random randomNumberGenerator = new Random();
     Button btnRandom;
     TextView whatsForLunch;
@@ -34,7 +34,7 @@ public class MainActivity extends ActionBarActivity {
         myRestaurantList = getSavedPreferences();
 
         //check if this is the first time starting app
-        if(myRestaurantList.get(0) == "[it's empty]") {
+        if(myRestaurantList.get(0).equals("[it's empty]")) {
             myRestaurantList = new ArrayList<>();
             myRestaurantList.add(emptyListFiller);
             Log.d("test", "First time app is running loading defaults");
